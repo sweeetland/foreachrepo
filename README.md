@@ -10,10 +10,17 @@ A CLI to recursively search for all repos from the current directory and run a g
 
 ## Install
 
-`npm i -g foreachrepo` or `yarn global add foreachrepo`
+`npm i -g foreachrepo`
+or
+
+`yarn global add foreachrepo`
 
 ## Usage
 
+Navigate to a directory that contains multiple git repos and run:
+
 `foreachrepo your terminal command`
 
-You can also use `fer` too: `fer your terminal command`
+or use `fer` for short:
+
+`fer your terminal command`
