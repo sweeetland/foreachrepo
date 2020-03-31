@@ -2,8 +2,11 @@
 
 import { forEachRepo } from './index'
 
-const cmd = process.argv.slice(2).join(' ')
+const cmd = process.argv
+    .slice(2)
+    .map(arg => `'${arg}'`)
+    .join(' ')
 
 // const GIT_LOG = `git log --all --author=$(git config user.email) --since=format:relative:24.hours.ago`
 
-forEachRepo(cmd, process.cwd())
+forEachRepo(process.cwd(), cmd)

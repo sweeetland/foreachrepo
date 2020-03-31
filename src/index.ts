@@ -4,18 +4,26 @@ import { promisify } from 'util'
 
 const exec = promisify(_exec)
 
-export const forEachRepo = async (command: string, path: string) => {
+const dirsToIgnore = ['node_modules', 'deps', 'gems', 'build', 'dist']
+
+export const forEachRepo = async (path: string, command: string) => {
     const branches = readdirSync(path, { withFileTypes: true })
 
     for (const branch of branches) {
-        if (!branch.isDirectory() || branch.name === 'node_modules') continue
+        if (!branch.isDirectory() || dirsToIgnore.includes(branch.name)) continue
 
         if (branch.name === '.git') {
-            const { stdout } = await exec(`cd ${path} && ${command}`)
-            console.log(stdout)
+            try {
+                const { stdout } = await exec(`cd ${path} && ${command}`)
+                console.log(stdout)
+            } catch (error) {
+                console.log(
+                    `command (${command}) failed with path (${path}) due to error: ${error.message}`
+                )
+            }
             continue
         }
 
-        forEachRepo(command, `${path}/${branch.name}`)
+        forEachRepo(`${path}/${branch.name}`, command)
     }
 }
